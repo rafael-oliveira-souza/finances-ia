@@ -9,7 +9,7 @@ PPLX_URL = "https://api.perplexity.ai/chat/completions"
 
 class PerplexityClient:
     def __init__(self):
-        self.api_key = "TesteAPisdaiji"
+        self.api_key = "TesteAPisdaiji222"
         if not self.api_key:
             raise ValueError("PPLX_API_KEY não encontrada no .env")
 
