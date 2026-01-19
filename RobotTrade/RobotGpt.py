@@ -60,7 +60,7 @@ class RobotGpt:
 
         self.account = self.conectar_mt5(login, senha, servidor)
         self.client = OpenAI(
-            api_key="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")
+            api_key="")
         self.perplexityClient = PerplexityClient()
 
     def conectar_mt5(self, login: int, senha: str, servidor: str, caminho_terminal: str = None):
