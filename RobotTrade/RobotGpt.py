@@ -190,8 +190,6 @@ class RobotGpt:
             "VALIDAÇÃO FINAL OBRIGATÓRIA PARA CADA TRADE:",
             "- Recalcular matematicamente stop e take antes de retornar",
             "- Se stop > take → NÃO incluir o trade",
-            "- Se take < stop → NÃO incluir o trade",
-            "- Se risco-retorno < 1:1 → NÃO incluir o trade",
             "",
             "Formato de saída:",
             "Retorne EXCLUSIVAMENTE um JSON válido no seguinte formato:",
@@ -214,7 +212,20 @@ class RobotGpt:
             "}",
             "",
             "- Se nenhuma negociação válida existir nos últimos 50 minutos:",
-            '{ "trades": [] }'
+            '{ "trades": ['
+            "   {",
+            '     "decision": "NO_TRADE",',
+            '     "type": "Buy" | "Sell",',
+            '     "price": number,',
+            '     "stop": number,',
+            '     "take": number,',
+            '     "datetime": "%Y-%m-%d %H:%M:%S",',
+            '     "duration_minutes": number,',
+            '     "tendency": "A favor" | "Contra",',
+            '     "confidence": "Alta" | "Média" | "Baixa",',
+            '     "justification": "Justificativa técnica curta e objetiva baseada nos candles e indicadores"',
+            "   }",
+            '] }'
         ]
 
         prompt = "\n".join(lines)
