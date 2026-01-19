@@ -205,7 +205,7 @@ class RobotGpt:
             '     "datetime": "%Y-%m-%d %H:%M:%S",',
             '     "duration_minutes": number,',
             '     "tendency": "A favor" | "Contra",',
-            '     "confidence": "Alta" | "Média" | "Baixa",',
+            '     "confidence": "ALTA" | "MEDIA" | "BAIXA",',
             '     "justification": "Justificativa técnica curta e objetiva baseada nos candles e indicadores"',
             "   }",
             " ]",
@@ -222,7 +222,7 @@ class RobotGpt:
             '     "datetime": "%Y-%m-%d %H:%M:%S",',
             '     "duration_minutes": number,',
             '     "tendency": "A favor" | "Contra",',
-            '     "confidence": "Alta" | "Média" | "Baixa",',
+            '     "confidence": "ALTA" | "MEDIA" | "BAIXA",',
             '     "justification": "Justificativa técnica curta e objetiva baseada nos candles e indicadores"',
             "   }",
             '] }'

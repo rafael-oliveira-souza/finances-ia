@@ -47,7 +47,7 @@ class PerplexityClient:
                                             "properties": {
                                                 "decision": {
                                                     "type": "string",
-                                                    "enum": ["TRADE"]
+                                                    "enum": ["TRADE", "NO_TRADE"]
                                                 },
                                                 "type": {
                                                     "type": "string",
@@ -77,7 +77,7 @@ class PerplexityClient:
                                                 },
                                                 "confidence": {
                                                     "type": "string",
-                                                    "enum": ["Alta", "Média", "Baixa"]
+                                                    "enum": ["ALTA", "MEDIA", "BAIXA"]
                                                 },
                                                 "justification": {
                                                     "type": "string"
@@ -106,7 +106,7 @@ class PerplexityClient:
                                             "properties": {
                                                 "decision": {
                                                     "type": "string",
-                                                    "enum": ["NO_TRADE"]
+                                                    "enum": ["TRADE", "NO_TRADE"]
                                                 },
                                                 "type": {
                                                     "type": ["string", "null"]
@@ -132,7 +132,7 @@ class PerplexityClient:
                                                 },
                                                 "confidence": {
                                                     "type": "string",
-                                                    "enum": ["Alta", "Média", "Baixa"]
+                                                    "enum": ["ALTA", "MEDIA", "BAIXA"]
                                                 },
                                                 "justification": {
                                                     "type": "string"
