@@ -60,7 +60,7 @@ class RobotGpt:
 
         self.account = self.conectar_mt5(login, senha, servidor)
         self.client = OpenAI(
-            api_key="")
+            api_key="Teste APiKey")
         self.perplexityClient = PerplexityClient()
 
     def conectar_mt5(self, login: int, senha: str, servidor: str, caminho_terminal: str = None):
@@ -93,7 +93,6 @@ class RobotGpt:
             "",
             "Vou te fornecer:",
             f"- O ativo {self.symbol}",
-            f"- Baseie-se no Perplexity Finance",
             f"- O timeframe {self.mt5_timeframe_to_string(self.timeframe)}",
             f"- Com o preço atual: {indices[num_candles - 1].close}",
             f"- Os Últimos {num_candles} candles (ordem cronológica, do mais antigo para o mais recente):",
@@ -109,6 +108,7 @@ class RobotGpt:
             "- Caso nenhuma negociação válida exista, retornar lista vazia",
             "",
             "Inclua obrigatoriamente na análise, como critério NÃO BLOQUEANTE:",
+            f"- Baseie-se no Perplexity Finance, ",
             "- Verificação de notícias e eventos recentes relevantes para o ouro e o mercado macro,",
             " considerando impacto (high / medium / low), com base em fontes internacionais confiáveis:",
             " Federal Reserve (Fed), U.S. Treasury, BIS, World Gold Council (WGC), LBMA, Bloomberg e Reuters.",
