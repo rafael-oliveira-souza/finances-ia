@@ -3,7 +3,7 @@ import os
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Any
+from typing import Any, List
 
 import MetaTrader5 as mt5
 from openai import OpenAI
@@ -220,7 +220,7 @@ class RobotGpt:
         prompt = "\n".join(lines)
         return prompt
 
-    def analisar_grafico_day_trade(self, contador: int) -> [CandleResponse]:
+    def analisar_grafico_day_trade(self, contador: int) -> List[CandleResponse]:
         """
         Analisa um gráfico para Day Trade utilizando:
         - CCI
