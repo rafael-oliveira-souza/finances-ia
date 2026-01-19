@@ -92,35 +92,36 @@ class RobotGptExecutor:
                             print()
                             print(
                                 f"############################################ INICIO DE ANALISE ################################################################################")
-                            result = self.robotGPT.analisar_grafico_day_trade(self.contador)
-                            print(
-                                f"Decisao: {datetime.now()} - {result.decision} - {result.type} - {result.confidence} - Entrada:{result.price} - Stop: {result.stop} - Take: {result.take} - {result.justification}")
+                            results = self.robotGPT.analisar_grafico_day_trade(self.contador)
+                            for result in results:
+                                print(
+                                    f"Decisao: {datetime.now()} - {result.decision} - {result.type} - {result.confidence} - Entrada:{result.price} - Stop: {result.stop} - Take: {result.take} - {result.justification}")
+                                if result.decision != "NO_TRADE" and result.confidence != "Baixa":
+                                    # Filtrar pelos últimos N minutos
+                                    agora = datetime.now()
+                                    limite = agora - timedelta(minutes=30)
+                                    ptStop = abs(result.stop - result.price) / 0.01
+                                    ptTake = abs(result.take - result.price) / 0.01
+                                    dataNormalizada = self.robotGPT.normalizar_data(result.time)
+                                    if (limite <= dataNormalizada <= agora):
+                                        # and ptStop > self.minimosNegociacao and ptTake > self.minimosNegociacao)
+                                        print()
+                                        print(
+                                            f"############################################ ENVIAR ORDEM ################################################################################")
+                                        print(
+                                            f"Ordem: {result.time} - {result.type} - {result.price} - {result.tendency} - {result.stop} - {result.take}")
+                                        print(f"Decisao: {datetime.now()} - {result.decision} - {result.justification}")
+                                        if result.type and result.type.upper():
+                                            result = self.robotGPT.executarOrdemImediata(result.type.upper(),
+                                                                                         result.stop,
+                                                                                         result.take)
+                                            self.contador = 0
+                                        else:
+                                            self.contador += 1
+                                        print(
+                                            f"############################################ ENVIAR ORDEM ################################################################################")
                             print(
                                 f"############################################ FIM DE ANALISE ################################################################################")
-                            if result.decision != "NO_TRADE" and result.confidence != "Baixa":
-                                # Filtrar pelos últimos N minutos
-                                agora = datetime.now()
-                                limite = agora - timedelta(minutes=30)
-                                ptStop = abs(result.stop - result.price) / 0.01
-                                ptTake = abs(result.take - result.price) / 0.01
-                                dataNormalizada = self.robotGPT.normalizar_data(result.time)
-                                if (limite <= dataNormalizada <= agora):
-                                    # and ptStop > self.minimosNegociacao and ptTake > self.minimosNegociacao)
-                                    print()
-                                    print(
-                                        f"############################################ ENVIAR ORDEM ################################################################################")
-                                    print(
-                                        f"Ordem: {result.time} - {result.type} - {result.price} - {result.tendency} - {result.stop} - {result.take}")
-                                    print(f"Decisao: {datetime.now()} - {result.decision} - {result.justification}")
-                                    if result.type and result.type.upper():
-                                        result = self.robotGPT.executarOrdemImediata(result.type.upper(),
-                                                                                     result.stop,
-                                                                                     result.take)
-                                        self.contador = 0
-                                    else:
-                                        self.contador += 1
-                                    print(
-                                        f"############################################ ENVIAR ORDEM ################################################################################")
                     else:
                         print(f"Limite {status["type"]} de trade diário atingido!")
                 else:

@@ -220,7 +220,7 @@ class RobotGpt:
         prompt = "\n".join(lines)
         return prompt
 
-    def analisar_grafico_day_trade(self, contador: int) -> CandleResponse:
+    def analisar_grafico_day_trade(self, contador: int) -> [CandleResponse]:
         """
         Analisa um gráfico para Day Trade utilizando:
         - CCI
@@ -259,37 +259,41 @@ class RobotGpt:
             #     ],
             #     temperature=0.1
             # )
+            candlesResult = []
 
             try:
                 content = response.choices[0].message.content.strip()
-                candle = json.loads(content)
-                return CandleResponse(
-                    candle['price'],
-                    candle['stop'],
-                    candle['take'],
-                    candle['type'],
-                    candle['tendency'],
-                    candle['datetime'],
-                    candle['decision'],
-                    candle['confidence'],
-                    candle['justification']
-                )
+                candles = json.loads(content)
+                for candle in candles['trades']:
+                    candlesResult.append(CandleResponse(
+                        candle['price'],
+                        candle['stop'],
+                        candle['take'],
+                        candle['type'],
+                        candle['tendency'],
+                        candle['datetime'],
+                        candle['decision'],
+                        candle['confidence'],
+                        candle['justification']
+                    ))
             except Exception as e:
                 content = response['choices'][0]['message']['content'].strip()
-                candle = json.loads(content)
-                return CandleResponse(
-                    candle['price'],
-                    candle['stop'],
-                    candle['take'],
-                    candle['type'],
-                    candle['tendency'],
-                    candle['datetime'],
-                    candle['decision'],
-                    candle['confidence'],
-                    candle['justification']
-                )
+                candles = json.loads(content)
 
-        return None
+                for candle in candles['trades']:
+                    candlesResult.append(CandleResponse(
+                        candle['price'],
+                        candle['stop'],
+                        candle['take'],
+                        candle['type'],
+                        candle['tendency'],
+                        candle['datetime'],
+                        candle['decision'],
+                        candle['confidence'],
+                        candle['justification']
+                    ))
+
+        return candlesResult
 
     def getQtdPosicoes(self):
         """

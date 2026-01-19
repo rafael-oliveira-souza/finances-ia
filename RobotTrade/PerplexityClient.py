@@ -19,7 +19,6 @@ class PerplexityClient:
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json"
         }
-
         payload = {
             "model": modelo,
             "messages": [
@@ -31,65 +30,127 @@ class PerplexityClient:
             "response_format": {
                 "type": "json_schema",
                 "json_schema": {
-                    "name": "trade_decision",
+                    "name": "trades_list",
                     "strict": True,
                     "schema": {
                         "type": "object",
                         "properties": {
-                            "decision": {
-                                "type": "string",
-                                "enum": ["TRADE", "NO_TRADE"]
-                            },
-                            "type": {
-                                "oneOf": [
-                                    {"type": "string", "enum": ["Buy", "Sell"]},
-                                    {"type": "null"}
-                                ]
-                            },
-                            "price": {
-                                "oneOf": [
-                                    {"type": "number"},
-                                    {"type": "null"}
-                                ]
-                            },
-                            "stop": {
-                                "oneOf": [
-                                    {"type": "number"},
-                                    {"type": "null"}
-                                ]
-                            },
-                            "take": {
-                                "oneOf": [
-                                    {"type": "number"},
-                                    {"type": "null"}
-                                ]
-                            },
-                            "datetime": {
-                                "oneOf": [
-                                    {
-                                        "type": "string",
-                                        "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$"
-                                    },
-                                    {
-                                        "type": "null"
-                                    }
-                                ]
-                            },
-                            "tendency": {
-                                "oneOf": [
-                                    {"type": "string", "enum": ["A favor", "Contra"]},
-                                    {"type": "null"}
-                                ]
-                            },
-                            "confidence": {
-                                "type": "string",
-                                "enum": ["ALTA", "MEDIA", "BAIXA"]
-                            },
-                            "justification": {
-                                "type": "string"
+                            "trades": {
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        # =====================
+                                        # CASO: TRADE VÁLIDO
+                                        # =====================
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "decision": {
+                                                    "type": "string",
+                                                    "enum": ["TRADE"]
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "enum": ["Buy", "Sell"]
+                                                },
+                                                "price": {
+                                                    "type": "number"
+                                                },
+                                                "stop": {
+                                                    "type": "number"
+                                                },
+                                                "take": {
+                                                    "type": "number"
+                                                },
+                                                "datetime": {
+                                                    "type": "string",
+                                                    "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$"
+                                                },
+                                                "duration_minutes": {
+                                                    "type": "number",
+                                                    "minimum": 1,
+                                                    "maximum": 90
+                                                },
+                                                "tendency": {
+                                                    "type": "string",
+                                                    "enum": ["A favor", "Contra"]
+                                                },
+                                                "confidence": {
+                                                    "type": "string",
+                                                    "enum": ["Alta", "Média", "Baixa"]
+                                                },
+                                                "justification": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "decision",
+                                                "type",
+                                                "price",
+                                                "stop",
+                                                "take",
+                                                "datetime",
+                                                "duration_minutes",
+                                                "tendency",
+                                                "confidence",
+                                                "justification"
+                                            ],
+                                            "additionalProperties": False
+                                        },
+
+                                        # =====================
+                                        # CASO: NO_TRADE
+                                        # =====================
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "decision": {
+                                                    "type": "string",
+                                                    "enum": ["NO_TRADE"]
+                                                },
+                                                "type": {
+                                                    "type": ["string", "null"]
+                                                },
+                                                "price": {
+                                                    "type": ["number", "null"]
+                                                },
+                                                "stop": {
+                                                    "type": ["number", "null"]
+                                                },
+                                                "take": {
+                                                    "type": ["number", "null"]
+                                                },
+                                                "datetime": {
+                                                    "type": "string",
+                                                    "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$"
+                                                },
+                                                "duration_minutes": {
+                                                    "type": ["number", "null"]
+                                                },
+                                                "tendency": {
+                                                    "type": ["string", "null"]
+                                                },
+                                                "confidence": {
+                                                    "type": "string",
+                                                    "enum": ["Alta", "Média", "Baixa"]
+                                                },
+                                                "justification": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "decision",
+                                                "datetime",
+                                                "confidence",
+                                                "justification"
+                                            ],
+                                            "additionalProperties": False
+                                        }
+                                    ]
+                                }
                             }
                         },
-                        "required": ["decision", "confidence", "justification"],
+                        "required": ["trades"],
                         "additionalProperties": False
                     }
                 }
@@ -102,4 +163,3 @@ class PerplexityClient:
             return response.json()
         else:
             raise Exception(f"Erro API: {response.status_code} - {response.text}")
-
