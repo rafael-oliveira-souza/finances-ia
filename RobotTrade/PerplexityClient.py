@@ -8,8 +8,8 @@ PPLX_URL = "https://api.perplexity.ai/chat/completions"
 
 
 class PerplexityClient:
-    def __init__(self):
-        self.api_key = "TesteAPisdaiji222"
+    def __init__(self, api_key: str):
+        self.api_key = api_key
         if not self.api_key:
             raise ValueError("PPLX_API_KEY não encontrada no .env")
 
@@ -102,15 +102,4 @@ class PerplexityClient:
             return response.json()
         else:
             raise Exception(f"Erro API: {response.status_code} - {response.text}")
-
-
-# Exemplo de uso (sua API endpoint)
-def endpoint_pergunta(pergunta: str):
-    """Simula um endpoint da sua API."""
-    client = PerplexityClient()
-    resultado = client.perguntar(pergunta)
-
-    # Extrai a resposta
-    resposta = resultado["choices"][0]["message"]["content"]
-    return resposta
 

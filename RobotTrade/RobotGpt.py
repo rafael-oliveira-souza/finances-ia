@@ -1,4 +1,5 @@
 import json
+import os
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
@@ -59,9 +60,8 @@ class RobotGpt:
         self.volume = volume
 
         self.account = self.conectar_mt5(login, senha, servidor)
-        self.client = OpenAI(
-            api_key="TesteAPisdaiji222")
-        self.perplexityClient = PerplexityClient()
+        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        self.perplexityClient = PerplexityClient(api_key=os.getenv("PERPLEXITY_API_KEY"))
 
     def conectar_mt5(self, login: int, senha: str, servidor: str, caminho_terminal: str = None):
         if caminho_terminal:
